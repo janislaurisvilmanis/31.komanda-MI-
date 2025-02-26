@@ -38,7 +38,8 @@ def virkne_uz_multikopu(virkne):
 # Funkcija, kas veic gājienu un atjauno spēles koku
 def gajiena_parbaude(gajiena_tips, generetas_virsotnes, pasreizeja_virsotne):
     global j
-    id_new = 'A' + str(j)  # Izveido jaunu virsotnes ID, piemēram, 'A2', 'A3', utt.
+    # Izveido jaunu virsotnes ID, piemēram, 'A2', 'A3', utt.
+    id_new = 'A' + str(j)  
     j += 1
 
     # Izveido kopiju no pašreizējās virsotnes virknes, lai to modificētu, neietekmējot oriģinālo
@@ -48,14 +49,16 @@ def gajiena_parbaude(gajiena_tips, generetas_virsotnes, pasreizeja_virsotne):
     iznemtais_skaitlis = mainita_virkne.pop(gajiena_tips)
     
     # Noteikt, kura spēlētāja kārta ir un pieskaitīt/atņemt atbilstošus punktus
-    if pasreizeja_virsotne[4] % 2 == 1:  # Spēlētājs 1 -> nepāra līmenis
+    # Spēlētājs 1 -> nepāra līmenis
+    if pasreizeja_virsotne[4] % 2 == 1:  
         if iznemtais_skaitlis % 2 == 0:
             p1_new = pasreizeja_virsotne[2] - 2 * iznemtais_skaitlis
             p2_new = pasreizeja_virsotne[3]  
         else:
             p1_new = pasreizeja_virsotne[2]
             p2_new = pasreizeja_virsotne[3] + iznemtais_skaitlis
-    else:  # Spēlētājs 2 -> pāra līmenis
+    # Spēlētājs 2 -> pāra līmenis
+    else:  
         if iznemtais_skaitlis % 2 == 0:
             p1_new = pasreizeja_virsotne[2]
             p2_new = pasreizeja_virsotne[3] - 2 * iznemtais_skaitlis
@@ -74,25 +77,30 @@ def gajiena_parbaude(gajiena_tips, generetas_virsotnes, pasreizeja_virsotne):
     
     # Pārbauda, vai jaunā virsotne jau eksistē spēles kokā (lai izvairītos no dublikātiem)
     parbaude = False
-    i = 0  # Sāk meklēt no pirmās virsotnes spēles kokā
+    # Sāk meklēt no pirmās virsotnes spēles kokā
+    i = 0  
     while (not parbaude) and (i <= len(sp.virsotnu_kopa) - 1):
         # Salīdzina jauno virsotni ar esošajām virsotnēm
         if (virkne_uz_multikopu(sp.virsotnu_kopa[i].virkne) == jauna_multikopa and
             sp.virsotnu_kopa[i].p1 == jauna_virsotne.p1 and
             sp.virsotnu_kopa[i].p2 == jauna_virsotne.p2 and
             sp.virsotnu_kopa[i].limenis == jauna_virsotne.limenis):
-            parbaude = True  # Ja visi nosacījumi ir izpildīti, virsotne ir dublikāts
+            # Ja visi nosacījumi ir izpildīti, virsotne ir dublikāts
+            parbaude = True  
         else:
-            i += 1  # Pāriet uz nākamo virsotni kokā
-    
-    if not parbaude:  # Ja nav dublikātu
+            # Pāriet uz nākamo virsotni kokā
+            i += 1  
+    # Ja nav dublikātu
+    if not parbaude: 
         # Pievieno jauno virsotni spēles kokam
         sp.pievienot_virsotni(jauna_virsotne)
         generetas_virsotnes.append([id_new, mainita_virkne, p1_new, p2_new, limenis_new])
         # Pievieno loku no pašreizējās virsotnes uz jauno virsotni
         sp.pievienot_loku(pasreizeja_virsotne[0], id_new)
-    else:  # Ja ir dublikāts
-        j -= 1  # Atceļ j palielināšanu, jo virsotne netika pievienota
+    # Ja ir dublikāts
+    else: 
+        # Atceļ j palielināšanu, jo virsotne netika pievienota
+        j -= 1  
         # Pievieno loku no pašreizējās virsotnes uz esošo virsotni (dublikātu)
         sp.pievienot_loku(pasreizeja_virsotne[0], sp.virsotnu_kopa[i].id)
 
@@ -100,19 +108,27 @@ def gajiena_parbaude(gajiena_tips, generetas_virsotnes, pasreizeja_virsotne):
 # Spēles inicializācija
 sp = Speles_koks()
 generetas_virsotnes = []
-garums = int(input("Ievadiet skaitļu virknes garumu (no 15 līdz 25): ")) # Lietotājs ievada virknes sākuma garumu
-sakuma_virkne = generet_virkni(garums) # Funkcija saģenerē nejaušo ciparu virkni
-sp.pievienot_virsotni(Virsotne('A1', sakuma_virkne, 100, 100, 1)) # Spēles kokam tiek pievienota sākuma virsotne
-generetas_virsotnes.append(['A1', sakuma_virkne, 100, 100, 1]) # Sākuma virsotne tiek pievienota izvēršamo virsotņu sarakstam
+# Lietotājs ievada virknes sākuma garumu
+garums = int(input("Ievadiet skaitļu virknes garumu (no 15 līdz 25): "))
+# Funkcija saģenerē nejaušo ciparu virkni
+sakuma_virkne = generet_virkni(garums) 
+# Spēles kokam tiek pievienota sākuma virsotne
+sp.pievienot_virsotni(Virsotne('A1', sakuma_virkne, 100, 100, 1))
+# Sākuma virsotne tiek pievienota izvēršamo virsotņu sarakstam
+generetas_virsotnes.append(['A1', sakuma_virkne, 100, 100, 1]) 
 j = 2
 
 # Spēles izpilde
 while len(generetas_virsotnes) > 0:
-    pasreizeja_virsotne = generetas_virsotnes[0] # Tiem paņemta virsotne no izvēršamo virsotņu saraksta
-    if pasreizeja_virsotne[4] < 3: # Ierobežojums cik vajag līmeņu
-        for gajiena_tips in range(len(pasreizeja_virsotne[1])): # Cikls, kurš iet cauri visiem iespējamiem variantiem, kuru ciparu var izņemt no pašreizējas virsotnes ciparu virknes
+    # Tiem paņemta virsotne no izvēršamo virsotņu saraksta
+    pasreizeja_virsotne = generetas_virsotnes[0]
+    # Ierobežojums cik vajag līmeņu
+    if pasreizeja_virsotne[4] < 3:
+        # Cikls, kurš iet cauri visiem iespējamiem variantiem, kuru ciparu var izņemt no pašreizējas virsotnes ciparu virknes
+        for gajiena_tips in range(len(pasreizeja_virsotne[1])): 
             gajiena_parbaude(gajiena_tips, generetas_virsotnes, pasreizeja_virsotne)
-    generetas_virsotnes.pop(0) # Virsotne ir izvērsta -> izdzēsta no izvēršamo virsotņu sarkasta
+    # Virsotne ir izvērsta -> izdzēsta no izvēršamo virsotņu sarkasta
+    generetas_virsotnes.pop(0) 
 # Rezultātu izvade
 for x in sp.virsotnu_kopa:
     print(x.id, x.virkne, x.p1, x.p2, x.limenis)

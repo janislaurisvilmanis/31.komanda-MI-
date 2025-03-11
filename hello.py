@@ -20,7 +20,10 @@ class Speles_koks:
         self.virsotnu_kopa.append(Virsotne)
         
     def pievienot_loku(self, sakumvirsotne_id, beiguvirsotne_id):
-        self.loku_kopa[sakumvirsotne_id] = self.loku_kopa.get(sakumvirsotne_id, []) + [beiguvirsotne_id]
+        if sakumvirsotne_id not in self.loku_kopa:
+            self.loku_kopa[sakumvirsotne_id] = []
+        if beiguvirsotne_id not in self.loku_kopa[sakumvirsotne_id]: # Izslēdz dublikātus
+            self.loku_kopa[sakumvirsotne_id].append(beiguvirsotne_id)
 
 # Funkcija, kas ģenerē sākuma skaitļu virkni
 def generet_virkni(garums):

@@ -263,6 +263,7 @@ def spele_cikls():
             virkne_label.config(text = "Spēle beigusies!\nUzvarētājs: Lietotājs")
         else:
             virkne_label.config(text = "Spēle beigusies!\nNeizšķirts")
+        return
     
     # Pārbauda vai ir datora gājiens
     if (current_node.limenis % 2 == 1 and pirmais == 1) or (current_node.limenis % 2 == 0 and pirmais == 2):
@@ -280,20 +281,20 @@ def spele_cikls():
 def lietotaja_gajiens():
     global current_node, izvele
     try:
-        # Iegūst lietotāja izvēlēto indeksu un samazina to par 1, lai tā vērtība tiktu atbalstīta saraksta indeksācijai
-        izvele = int(entry_izvele.get()) - 1
-        # Indeksa derīguma pārbaude
-        if izvele < 0 or izvele > len(current_node.virkne):
-            messagebox.showerror("Kļūda", "Nepareizs indekss!")
-            return
-        # Tiek veikts lietotāja gājiens
-        gajiena_parbaude(izvele, current_node)
-        temp_virkne = virkne_uz_multikopu(current_node.virkne[:izvele] + current_node.virkne[izvele + 1:])
-        current_node = next(v for v in sp.virsotnu_kopa if v.id in sp.loku_kopa.get(current_node.id, []) and virkne_uz_multikopu(v.virkne) == temp_virkne)
-        atjaunot_spele_stavokli()
-        # Notīra ievades lauku, katru reizi, kad tiek uzspiesta poga iesniegt, lai varētu ievadīt nākamo gājienu
-        entry_izvele.delete(0, tk.END)
-        spele_cikls()
+            # Iegūst lietotāja izvēlēto indeksu un samazina to par 1, lai tā vērtība tiktu atbalstīta saraksta indeksācijai
+            izvele = int(entry_izvele.get()) - 1
+            # Indeksa derīguma pārbaude
+            if izvele < 0 or izvele > len(current_node.virkne):
+                messagebox.showerror("Kļūda", "Nepareizs indekss!")
+                return
+            # Tiek veikts lietotāja gājiens
+            gajiena_parbaude(izvele, current_node)
+            temp_virkne = virkne_uz_multikopu(current_node.virkne[:izvele] + current_node.virkne[izvele + 1:])
+            current_node = next(v for v in sp.virsotnu_kopa if v.id in sp.loku_kopa.get(current_node.id, []) and virkne_uz_multikopu(v.virkne) == temp_virkne)
+            atjaunot_spele_stavokli()
+            # Notīra ievades lauku, katru reizi, kad tiek uzspiesta poga iesniegt, lai varētu ievadīt nākamo gājienu
+            entry_izvele.delete(0, tk.END)
+            spele_cikls()
     except ValueError:
         messagebox.showerror("Kļūda", "Lūdzu, ievadiet veselu skaitli!")
 

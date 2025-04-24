@@ -256,13 +256,22 @@ def atjaunot_spele_stavokli():
 
 def spele_cikls():
     global current_node
-    if not current_node.virkne:
-        if current_node.p1 > current_node.p2:
-            virkne_label.config(text = "Spēle beigusies!\nUzvarētājs: Dators")
-        elif current_node.p1 < current_node.p2:
-            virkne_label.config(text = "Spēle beigusies!\nUzvarētājs: Lietotājs")
+    if not current_node.virkne: 
+        #Labojumi tika veikti tikai grafiskajā programmas daļā, jo tika pamanīta kļūda pie rezultāta izvades (Neietekmē algoritma darbību)
+        if pirmais != 1:
+            if current_node.p1 > current_node.p2:
+                virkne_label.config(text = "Spēle beigusies!\nUzvarētājs: Dators")
+            elif current_node.p1 < current_node.p2:
+                virkne_label.config(text = "Spēle beigusies!\nUzvarētājs: Lietotājs")
+            else:
+                virkne_label.config(text = "Spēle beigusies!\nNeizšķirts")
         else:
-            virkne_label.config(text = "Spēle beigusies!\nNeizšķirts")
+            if current_node.p1 < current_node.p2:
+                virkne_label.config(text = "Spēle beigusies!\nUzvarētājs: Dators")
+            elif current_node.p1 > current_node.p2:
+                virkne_label.config(text = "Spēle beigusies!\nUzvarētājs: Lietotājs")
+            else:
+                virkne_label.config(text = "Spēle beigusies!\nNeizšķirts")
         return
     
     # Pārbauda vai ir datora gājiens
